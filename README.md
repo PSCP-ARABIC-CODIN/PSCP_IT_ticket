@@ -3,28 +3,57 @@
 ## DEPENDENCIES
 for develop and running this project the packages below this should be installed
 
-### discord.py
+### First step
 
-To get library from PyPI
-```bash
-python3 -m pip install -U discord.py
-```
-For Window system
-```bash
-py -3 -m pip install -U discord.py
-```
-For Debian-based OS (Such as : Ubuntu)
-```bash
-sudo apt install -y python3-discord
+to start developing the project. Installing "poetry" is recommmend for this project to prevent something like "Its work on my machine but not others".
+
+### Installing poetry
+To install poetry run the command below<br>
+
+**Window**
+```sh
+pip install poetry
 ```
 
-### dotenv
-
-For Window
-```bash
-py -3 pip install python-dotenv
+**Debian based OS (Such as: Ubuntu)**
+```sh
+sudo apt install python3-poetry
 ```
-For Debian-based OS (Such as : Ubuntu)
-```bash
-sudo apt install python3-dotenv
+
+### RUN Poetry to set up Virtual Environment
+Set up the virtujal environment for developing thsi project
+
+Go to ```it_ticket``` directory
+```sh
+cd src/requirement/main/it_ticket
+```
+Set config for poetry to make it create virtual environment
+```sh
+poetry config virtualenvs.in-project true
+```
+Then install all dependencies run
+```sh
+poetry install
+```
+
+### Now Good to go 👍
+except.... for those who want to use docker<br>
+to build docker compose run this at root directory of the project 
+```sh
+make build
+```
+
+for start all microservice
+```sh
+make up
+```
+
+to stop the container
+```sh
+make down
+```
+
+to restart the service 
+```sh
+make re
 ```
