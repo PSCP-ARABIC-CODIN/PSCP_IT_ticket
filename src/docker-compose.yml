@@ -8,6 +8,13 @@ volumes:
       device: /database
       o: bind
       type: none
+  main:
+    name: it_ticket
+    driver: local
+    driver_opts:
+      device: ./requirement/main/it_ticket
+      o: bind
+      type: none
 
 networks:
   ticketnet:
@@ -18,3 +25,16 @@ services:
     container_name: ticket_it
     build: ./requirement/main
     stop_signal: SIGINT
+    volumes:
+      - main:/var/it_ticket
+    env_file:
+      - .env
+    restart: always
+#     environment:
+#       - TOKEN:/run/secrets/token
+#     secrets:
+#       - token
+
+# secrets:
+#    token:
+#      file: .env
