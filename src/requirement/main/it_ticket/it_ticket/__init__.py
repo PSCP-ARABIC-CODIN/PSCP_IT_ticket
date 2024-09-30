@@ -33,6 +33,11 @@ async def hello(interaction: discord.Interaction):
     """Says hello!"""
     await interaction.response.send_message(f'Hi, {interaction.user.mention}')
 
+@client.tree.command()
+async def setroom(interaction: discord.Interaction):
+    """Says hello!"""
+    await interaction.response.send_message(f'{interaction.channel_id}')
+
 try:
     load_dotenv()
     client.run(os.getenv("TOKEN"))
