@@ -1,21 +1,40 @@
 from dotenv import load_dotenv
+from discord.ext import commands
+from discord import app_commands
 import discord
 import os
 
+SERVER = discord.Object(id=1285544666149687396)
+
+class MyClient(discord.Client):
+    """Constructor for Client(Bot)"""
+    def __init__(self, *, intents: discord.Intents):
+        """Initialize and Link command tree"""
+        super().__init__(intents=intents)
+        self.tree = app_commands.CommandTree(self) # sync command tree
+
+    async def setup_hook(self) -> None:
+        """Copy command from global into server"""
+        self.tree.copy_global_to(guild=SERVER)
+        await self.tree.sync(guild=SERVER)
+
 intents = discord.Intents.default()
 intents.message_content = True
-client = discord.Client(intents=intents)
+client = MyClient(intents=intents)
 
-def main():
-    """void"""
-    @client.event
-    async def on_ready():
-        print(f'We have logged in as {client.user}')
-        print(client.status)
+@client.event
+async def on_ready():
+    print(f'Logged in as {client.user} (ID: {client.user.id})')
+    print('------')
 
-if __name__ == "__main__":
-    main()
+#   Slash command example
+@client.tree.command()
+async def hello(interaction: discord.Interaction):
+    """Says hello!"""
+    await interaction.response.send_message(f'Hi, {interaction.user.mention}')
+
+try:
     load_dotenv()
     client.run(os.getenv("TOKEN"))
-else:
-    print("This module not for import")
+except Exception as error:
+    print(error)
