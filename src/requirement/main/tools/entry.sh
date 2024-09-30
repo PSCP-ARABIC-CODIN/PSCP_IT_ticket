@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# python3 /var/src/main.py
-
 cd /var/it_ticket
 
 trap "exit" TERM

@@ -1,40 +1,23 @@
 version: '3.5'
 
-volumes:
-  database:
-    name: ticketdb
-    driver: local
-    driver_opts:
-      device: /database
-      o: bind
-      type: none
-  main:
-    name: it_ticket
-    driver: local
-    driver_opts:
-      device: ./requirement/main/it_ticket
-      o: bind
-      type: none
-
 networks:
   ticketnet:
     name: ticketnet
 
 services:
   main:
-    container_name: ticket_it
-    build: ./requirement/main
+    container_name: ticket_main
     stop_signal: SIGINT
+    build: ./requirement/main
     volumes:
-      - main:/var/it_ticket
-    env_file:
-      - .env
-    restart: always
-#     environment:
-#       - TOKEN:/run/secrets/token
-#     secrets:
-#       - token
+      - ticketmain:/var/it_ticket
+    env_file: .env
 
-# secrets:
-#    token:
-#      file: .env
+volumes:
+  ticketmain:
+    name: ticketmain
+    driver: local
+    driver_opts:
+      device: ./requirement/main/it_ticket
+      o: bind
+      type: none
