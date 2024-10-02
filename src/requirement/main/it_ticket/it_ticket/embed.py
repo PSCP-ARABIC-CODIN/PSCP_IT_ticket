@@ -17,6 +17,5 @@ def embed_cmd(client: discord.Client) -> None:
         )
         embed.set_image(url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_wx9ytkWpaORplO5wMqeYtEtP23Wb3bSigw&s")
         embed.set_footer(text="Testing 101")
-
         # Send the embed message using interaction.response
         await interaction.response.send_message(embed=embed)

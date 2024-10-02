@@ -7,7 +7,7 @@
 #		"make down" - to stop all microservice
 #		"make re" - to restart all microservice
 
-all: down build up
+all: re
 
 build:
 	docker compose -f ./src/docker-compose.yml build --no-cache
