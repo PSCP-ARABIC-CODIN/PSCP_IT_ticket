@@ -12,7 +12,7 @@ intents.message_content = True
 client = commands.Bot(
     command_prefix = '<COMMANDS>',
     intents = intents,
-    activity = discord.Game('on Docker')
+    activity = discord.Game('on Vscode')
 )
 
 @client.event
