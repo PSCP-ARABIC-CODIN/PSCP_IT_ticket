@@ -4,13 +4,13 @@ def embed_cmd(client: discord.Client) -> None:
     """init embed command"""
     class MyView(discord.ui.View):  # Create a class called MyView that subclasses discord.ui.View
         @discord.ui.button(style=discord.ButtonStyle.primary, emoji="✉️")  # Create a button with the label "✉️" with color Blurple 
-        #(you can set text in button by using lebel="brabrabra")
+        # (you can set text in button by using lebel="brabrabra")
         async def button_callback(self,interaction:discord.Interaction,button:discord.ui.Button):
             # Ensuring a response to the button interaction
-            await interaction.response.send_message("BRuh")
+            await interaction.response.send_message("Bruh")
 
     # Create a slash command
-    @client.tree.command(name="embedstart", description="Send ticket message")
+    @client.tree.command(name="set", description="Send ticket message")
     async def ticket(interaction: discord.Interaction):
         embed = discord.Embed(
             description=(

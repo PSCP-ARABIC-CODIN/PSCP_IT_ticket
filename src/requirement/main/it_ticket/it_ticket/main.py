@@ -50,7 +50,7 @@ class MyView(discord.ui.View):  # Create a class called MyView that subclasses d
     #(you can set text in button by using lebel="brabrabra")
     async def button_callback(self,interaction:discord.Interaction,button:discord.ui.Button):
         # Ensuring a response to the button interaction
-        await interaction.response.send_message("BRuh")
+        await interaction.response.send_message("Bruh")
 
 #Create a slash command
 @client.tree.command(name="button")  # The name of the slash command
