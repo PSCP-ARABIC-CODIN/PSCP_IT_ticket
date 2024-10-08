@@ -45,4 +45,25 @@ async def setroom(interaction: discord.Interaction, channel: discord.TextChannel
     """Says hello!"""
     await interaction.response.send_message(f'{interaction.channel_id}')
 
-client.run(os.getenv("TOKEN"))
+class MyView(discord.ui.View):  # Create a class called MyView that subclasses discord.ui.View
+    @discord.ui.button(style=discord.ButtonStyle.primary, emoji="✉️")  # Create a button with the label "✉️" with color Blurple 
+    #(you can set text in button by using lebel="brabrabra")
+    async def button_callback(self,interaction:discord.Interaction,button:discord.ui.Button):
+        # Ensuring a response to the button interaction
+        await interaction.response.send_message("BRuh")
+
+#Create a slash command
+@client.tree.command(name="button")  # The name of the slash command
+async def button(interaction: discord.Interaction):
+    # Send an initial message with the button
+    await interaction.response.send_message(view=MyView())
+
+try:
+    # import initialize function of embed
+    from embed import embed_cmd
+    # pass the client object into the imported function
+    embed_cmd(client)
+    load_dotenv()
+    client.run(os.getenv("TOKEN"))
+except Exception as error:
+    print(error)
