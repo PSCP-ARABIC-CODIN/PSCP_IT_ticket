@@ -6,7 +6,13 @@ def embed_cmd(client: discord.Client) -> None:
         @discord.ui.button(style=discord.ButtonStyle.primary, emoji="🎟️", label="Create Ticket Here")  # Create a button
         async def button_callback(self, interaction: discord.Interaction, button: discord.ui.Button):
             # Ensuring a response to the button interaction
-            await interaction.response.send_message("Google or ChatGPT?")
+            await interaction.response.send_message("English or Spanish?")
+            # Attempt to create a thread [Ja]
+            channel = client.get_channel(1290323018102476811)
+            thread = await channel.create_thread(name="UES", message=None, )
+            thread.join()
+            await thread.send("Pls wait for TA to respond")
+            await thread.add_user(interaction.user)
 
     # Create a slash command
     @client.tree.command(name="ticket", description="Send ticket message")
