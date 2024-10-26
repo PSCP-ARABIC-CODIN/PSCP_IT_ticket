@@ -6,8 +6,9 @@ from discord import ChannelType
 from discord.ext import commands
 
 load_dotenv()
-intents = discord.Intents.default()
+intents : discord.Intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 
 client = commands.Bot(
     command_prefix = '<COMMANDS>',
@@ -24,7 +25,7 @@ async def on_ready():
 
     except Exception as e:
         print(f'Exception detected while syncing the commands: \n{e}')
-    
+
     print(f'Logged in as {client.user} (ID: {client.user.id})')
     print('------')
 
@@ -34,10 +35,19 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+@client.tree.command(name="cleanhouse", description="Archive all acctive thread")
+async def clean_thread(interaction : discord.Interaction):
+    await interaction.channel.typing()
+    for thread in interaction.channel.threads:
+        await thread.edit(
+            archived = True,
+            locked = True
+        )
+    await interaction.response.send_message("Your home is clean")
 
-# @client.tree.command()
+@client.tree.command(name="cat", description="cat everywhere")
+async def cat(interaction : discord.Interaction):
+    await interaction.response.send_message(f"{interaction.channel.threads}")
 
 try:
     # import initialize function of embed

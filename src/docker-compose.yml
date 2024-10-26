@@ -12,6 +12,14 @@ services:
     volumes:
       - ticketmain:/var/it_ticket
     env_file: .env
+  # database:
+  #   container_name: ticket_db
+  #   stop_signal: SIGINT
+  #   build: ./requirement/database
+  #   volumes:
+  #     - ticket_db:/data/db
+  #   ports:
+  #     - "27017:27017"
 
 volumes:
   ticketmain:
@@ -21,3 +29,10 @@ volumes:
       device: ./requirement/main/it_ticket
       o: bind
       type: none
+  # ticket_db:
+  #   name: ticket_db
+  #   driver: local
+  #   driver_opts:
+  #     device: ./requirement/database/db
+  #     o: bind
+  #     type: none
