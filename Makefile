@@ -9,7 +9,12 @@
 
 all: re
 
-build:
+init-dir: src/requirement/database/db
+
+src/requirement/database/db:
+	mkdir -p src/requirement/database/db
+
+build: init-dir
 	docker compose -f ./src/docker-compose.yml build --no-cache
 
 up:
