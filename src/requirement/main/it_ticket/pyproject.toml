@@ -8,6 +8,7 @@ authors = ["Kawaiiow <poohsn1357@gmail.com>"]
 python = "^3.12"
 discord = "^2.3.2"
 python-dotenv = "^1.0.1"
+pymongo = "^4.10.1"
 
 [build-system]
 requires = ["poetry-core"]
