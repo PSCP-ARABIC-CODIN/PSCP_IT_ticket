@@ -35,6 +35,12 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+# latency
+@client.tree.command(name="ping", description="Check the bot's latency")
+async def ping(interaction: discord.Interaction):
+    latency = round(client.latency * 1000)
+    await interaction.response.send_message(f"Pong! Latency: {latency} ms")
+
 @client.tree.command(name="cleanhouse", description="Archive all acctive thread")
 async def clean_thread(interaction : discord.Interaction):
     await interaction.channel.typing()
