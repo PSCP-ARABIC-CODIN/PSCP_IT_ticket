@@ -40,22 +40,26 @@ def embed_cmd(client: discord.Client) -> None:
     # Create a slash command
     @client.tree.command(name="ticket", description="Send ticket message")
     async def text_box(interaction: discord.Interaction, text: str = "", link: str = ""):
-        if interaction.channel.type != discord.ChannelType.text:
-            await interaction.response.send_message("## Can't use inside thread")
-            return
+        if interaction.user.guild_permissions.administrator:
+            if interaction.channel.type != discord.ChannelType.text:
+                await interaction.response.send_message("## Can't use inside thread")
+                return
 
-        aduse = interaction.user.mention
-        embed = discord.Embed(
-            description=(
-                f"**{aduse}**\n"
-                f"**Hello with message \"{text}\"**\n"
-                "ต้องการสอบถามพี่ๆ แบบส่วนตัว\n"
-                "สามารถกดปุ่มด้านล่างได้เลย !!!"
-            ),
-            color=0xF75306,  # Orange color
-        )
-        if link:
-            embed.set_image(url=f"{link}")
-        embed.set_footer(text="With hate by ...")
-        # Send the embed message using interaction.response
-        await interaction.response.send_message(interaction.channel.type, embed=embed, view=create_thread_btn())
+            aduse = interaction.user.mention
+            embed = discord.Embed(
+                description=(
+                    f"**{aduse}**\n"
+                    f"**Hello with message \"{text}\"**\n"
+                    "ต้องการสอบถามพี่ๆ แบบส่วนตัว\n"
+                    "สามารถกดปุ่มด้านล่างได้เลย !!!"
+                ),
+                color=0xF75306,  # Orange color
+            )
+            if link:
+                embed.set_image(url=f"{link}")
+            embed.set_footer(text="With hate by ...")
+            # Send the embed message using interaction.response
+            await interaction.response.send_message(interaction.channel.type, embed=embed, view=create_thread_btn())
+        else:
+            await interaction.response.send_message("You need Administrator permissions to use this command.", ephemeral=True)
+        return
