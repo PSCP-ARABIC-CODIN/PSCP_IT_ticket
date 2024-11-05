@@ -7,8 +7,9 @@ class archive_thread_btn(discord.ui.View):
 
         # edit stat inside channel
         await interaction.channel.edit(
-            archived = True,
-            locked = True
+            name=f"[CLOSED]{interaction.channel.name[interaction.channel.name.find("]") + 1:]}",
+            locked = True,
+            archived = True
         )
 
 class create_thread_btn(discord.ui.View):  # Create a class called MyView that subclasses discord.ui.View
@@ -16,7 +17,7 @@ class create_thread_btn(discord.ui.View):  # Create a class called MyView that s
     async def button_callback(self, interaction: discord.Interaction, button: discord.ui.Button):
         # Create a Thread
         thread = await interaction.channel.create_thread(name="template")
-        await thread.edit(name=f"{interaction.user.name}[{thread.id}]")
+        await thread.edit(name=f"[OPEN]{interaction.user.name}[{thread.id}]")
         await thread.join()
         await thread.add_user(interaction.user)
 
