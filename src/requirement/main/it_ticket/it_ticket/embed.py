@@ -1,3 +1,4 @@
+from tdb import ticket_tab
 import discord
 
 class archive_thread_btn(discord.ui.View):
@@ -16,6 +17,7 @@ class create_thread_btn(discord.ui.View):  # Create a class called MyView that s
     @discord.ui.button(style=discord.ButtonStyle.primary, emoji="🎟️", label="Create Ticket Here")  # Create a button
     async def button_callback(self, interaction: discord.Interaction, button: discord.ui.Button):
         # Create a Thread
+        tab = ticket_tab(interaction.guild_id)
         thread = await interaction.channel.create_thread(name="template")
         await thread.edit(name=f"[OPEN]{interaction.user.name}[{thread.id}]")
         await thread.join()
@@ -34,6 +36,8 @@ class create_thread_btn(discord.ui.View):  # Create a class called MyView that s
             ),
             view = archive_thread_btn()
         )
+        tab.ft_ins_thread(thread.id, interaction.user.name,\
+                          interaction.user.id, True, True, [])
 
 def embed_cmd(client: discord.Client) -> None:
     """init embed command"""
