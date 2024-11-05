@@ -12,6 +12,8 @@ services:
     volumes:
       - ticketmain:/var/it_ticket
     env_file: .env
+    networks:
+      - ticketnet
   database:
     container_name: ticket_db
     stop_signal: SIGINT
@@ -21,6 +23,8 @@ services:
     ports:
       - "27017:27017"
     env_file: .env
+    networks:
+      - ticketnet
 
 volumes:
   ticketmain:
