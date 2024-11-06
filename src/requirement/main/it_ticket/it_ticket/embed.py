@@ -16,6 +16,10 @@ class archive_thread_btn(discord.ui.View):
         )
 
 class create_thread_btn(discord.ui.View):  # Create a class called MyView that subclasses discord.ui.View
+    def __init__(self, *, timeout: float | None = 180, responder : discord.Role | None = None):
+        super().__init__(timeout=timeout)
+        self.responder = responder
+
     @discord.ui.button(style=discord.ButtonStyle.primary, emoji="🎟️", label="Create Ticket Here")  # Create a button
     async def button_callback(self, interaction: discord.Interaction, button: discord.ui.Button):
         # Create a Thread
@@ -31,6 +35,7 @@ class create_thread_btn(discord.ui.View):  # Create a class called MyView that s
 
         # Send Embed for Archiving
         await thread.send(
+            content=self.responder.mention,
             embed = discord.Embed(
                 title = "**Archive the thread**",
                 description = "When finished your question use button below\n to archive thread",
@@ -61,4 +66,4 @@ def embed_cmd(client: discord.Client) -> None:
             embed.set_image(url=f"{link}")
         embed.set_footer(text=f"By alabic coding")
         # Send the embed message using interaction.response
-        await interaction.response.send_message(embed=embed, view=create_thread_btn())
+        await interaction.response.send_message(embed=embed, view=create_thread_btn(responder=mentionrole))
