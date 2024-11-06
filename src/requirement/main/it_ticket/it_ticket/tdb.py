@@ -67,13 +67,17 @@ class ticket_tab:
             {"thread_id" : tid}, { "$set" : {"status" : False}}
         )
 
-    def ft_get_by_thread(self, thread_id) -> dict:
+    def ft_get_by_thread(self, tid : int) -> dict:
         """get specific record by id"""
-        return self.collection.find_one({"thread_id" : thread_id})
+        return self.collection.find_one({"thread_id" : tid})
 
-    def ft_get_by_user(self, user_id) -> pymongo.cursor.Cursor:
+    def ft_get_by_user(self, user_id : int):
         """get specific record by user"""
-        return self.collection.find({"user_id" : user_id})
+        return self.collection.find({"owner_id" : user_id}).to_list()
+
+    def ft_get_by_stat(self, status : bool) -> pymongo.cursor.Cursor:
+        """get specific record by open/closed"""
+        return self.collection({"status" : status })
 
     def ft_get_all(self) -> pymongo.cursor.Cursor:
         """get record of all thread in the server"""
