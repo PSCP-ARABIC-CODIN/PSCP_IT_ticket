@@ -35,7 +35,7 @@ class create_thread_btn(discord.ui.View):  # Create a class called MyView that s
 
         # Send Embed for Archiving
         await thread.send(
-            content=self.responder.mention,
+            content=self.responder.mention if self.responder else "",
             embed = discord.Embed(
                 title = "**Archive the thread**",
                 description = "When finished your question use button below\n to archive thread",
