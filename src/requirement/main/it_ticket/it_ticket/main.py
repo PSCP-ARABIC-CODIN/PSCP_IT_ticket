@@ -39,7 +39,7 @@ async def on_message(message : discord.Message):
     cur_channel = message.channel
     if cur_channel.type == discord.ChannelType.private_thread:
         tab = ticket_tab(message.guild.id)
-        tab.ft_update_participant(cur_channel.id, message.author.name)
+        tab.ft_update_participant(cur_channel.id, message.author.id)
 
 
 
@@ -111,6 +111,10 @@ async def cb(interaction : discord.Interaction, user : discord.User):
 async def cb(interaction : discord.Interaction, thread : discord.Thread):
     tab = ticket_tab(interaction.guild_id)
     res = tab.ft_get_by_thread(thread.id)
+    if not res:
+        await interaction.response.send_message("This Thread isn't record in table")
+        return
+
     embed = discord.Embed(
         title="Log thread command",
         color=0x3868e0,
@@ -119,7 +123,7 @@ async def cb(interaction : discord.Interaction, thread : discord.Thread):
     embed.add_field(name="Owner",value=interaction.guild.get_member(res["owner_id"]).mention,inline=False)
     embed.add_field(name="Active Status",value=res["status"],inline=False)
     embed.add_field(name="Participant",value=res["participant"],inline=False)
-    await interaction.response.send_message(embed=embed if res else "This Thread isn't record in table")
+    await interaction.response.send_message(embed=embed)
 
 @client.tree.command(name="log_stat", description="Log by thread status")
 async def cb(interaction : discord.Interaction, status : bool):

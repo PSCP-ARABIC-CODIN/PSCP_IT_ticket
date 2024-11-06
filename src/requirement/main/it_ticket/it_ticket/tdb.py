@@ -43,7 +43,7 @@ class ticket_tab:
                     "owner_id" : "0",
                     "private" : True,
                     "status" : True,
-                    "participant" : ["Alice"]
+                    "participant" : [1]
                 })
             self.collection = new_collec
             self.collection.delete_one({"thread_id" : -1})
@@ -54,7 +54,7 @@ class ticket_tab:
                         user_id : int, private : bool,\
                         status : bool, participant : list) -> None:
         """call after create thread"""
-        participant.append(username)
+        participant.append(user_id)
         self.collection.insert_one(
                 {
                     "thread_id" : tid,
@@ -65,14 +65,14 @@ class ticket_tab:
                     "participant" : participant
                 })
     
-    def ft_update_participant(self, tid : int, username : str) -> None:
+    def ft_update_participant(self, tid : int, user_id : int) -> None:
         """update participant list"""
         rec = self.collection.find_one({"thread_id" : tid}, {})
         if not rec or rec == None:
             return
         par_list : list = rec["participant"]
-        if not username in par_list:
-            par_list.append(username)
+        if not user_id in par_list:
+            par_list.append(user_id)
             self.collection.update_one(
                 {"thread_id" : tid}, { "$set" : {"participant" : par_list}}
             )
