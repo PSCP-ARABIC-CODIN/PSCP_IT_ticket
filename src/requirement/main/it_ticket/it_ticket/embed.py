@@ -43,8 +43,7 @@ class create_thread_btn(discord.ui.View):  # Create a class called MyView that s
             ),
             view = archive_thread_btn()
         )
-        tab.ft_ins_thread(thread.id, interaction.user.name,\
-                          interaction.user.id, True, True, [])
+        tab.ft_ins_thread(thread.id, interaction.user.name,interaction.user.id, True, True, [])
 
 def embed_cmd(client: discord.Client) -> None:
     """init embed command"""
@@ -55,8 +54,6 @@ def embed_cmd(client: discord.Client) -> None:
         if interaction.channel.type != discord.ChannelType.text:
             await interaction.response.send_message("## Can't use inside thread")
             return
-
-        aduse = interaction.user.mention
         embed = discord.Embed(
             title=header,
             description=descriptions,
@@ -64,6 +61,6 @@ def embed_cmd(client: discord.Client) -> None:
         )
         if link:
             embed.set_image(url=f"{link}")
-        embed.set_footer(text=f"By alabic coding")
+        embed.set_footer(interaction.user.mention)
         # Send the embed message using interaction.response
         await interaction.response.send_message(embed=embed, view=create_thread_btn(responder=mentionrole))

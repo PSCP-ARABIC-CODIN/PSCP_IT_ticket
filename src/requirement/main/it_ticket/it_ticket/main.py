@@ -160,10 +160,26 @@ async def cb(interaction : discord.Interaction, thread : discord.Thread):
 @client.tree.command(name="log_stat", description="Log by thread status")
 async def cb(interaction : discord.Interaction, status : bool):
     tab = ticket_tab(interaction.guild_id)
-    msg = ""
-    for obj in tab.ft_get_by_stat(status):
-        msg += str(obj) + "\n"
-    await interaction.response.send_message(msg if msg else "None of specific thread exist")
+    if not tab:
+        await interaction.response.send_message("None of specific thread exist")
+    else:
+        numid = 0
+        threadid = ""
+        part = ""
+        for obj in tab.ft_get_by_stat(status):
+            numid += 1
+            if obj["status"] is False:
+                threadid += f"{numid:>02} | "+interaction.guild.get_member(obj["owner_id"]).mention+"-[INACTIVE]-"+str(obj["thread_id"]) + "\n"
+            else:
+                threadid += f"{numid:>02} | "+interaction.guild.get_member(obj["owner_id"]).mention+"-[ACTIVE]-"+str(obj["thread_id"]) + "\n"
+            part += ", ".join([interaction.guild.get_member(user_id).mention for user_id in obj["participant"]]) + "\n"
+        embed = discord.Embed(
+            title=f"All [{status}] threads history",
+            color=0x3868e0,
+        )
+        embed.add_field(name="Thread-user-status-ID",value=threadid)
+        embed.add_field(name="Participant",value=part)
+        await interaction.response.send_message(embed=embed)
 
 try:
     # import initialize function of embed
