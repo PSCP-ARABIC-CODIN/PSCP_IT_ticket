@@ -94,18 +94,50 @@ async def cb(interaction : discord.Interaction):
     if not tab:
         await interaction.response.send_message("No Table Exist")
     else:
-        msg = ""
+        numid = 0
+        threadid = ""
+        status = ""
+        part = ""
         for rec in tab.ft_get_all():
-            msg += str(rec) + "\n"
-        await interaction.response.send_message(msg if msg else "Nothing exist in table")
+            numid += 1
+            if rec["status"] is False:
+                threadid += f"{numid:>02} | "+interaction.guild.get_member(rec["owner_id"]).mention+"-[INACTIVE]-"+str(rec["thread_id"]) + "\n"
+            else:
+                threadid += f"{numid:>02} | "+interaction.guild.get_member(rec["owner_id"]).mention+"-[ACTIVE]-"+str(rec["thread_id"]) + "\n"
+            status += "["+str(rec["status"]) + "]\n"
+            part += ", ".join([interaction.guild.get_member(user_id).mention for user_id in rec["participant"]]) + "\n"
+        embed = discord.Embed(
+            title=f"All thread history",
+            color=0x3868e0,
+        )
+        embed.add_field(name="Thread-user-status-ID",value=threadid)
+        embed.add_field(name="Participant",value=part)
+        await interaction.response.send_message(embed=embed)
 
 @client.tree.command(name="log_user", description="log specific user")
 async def cb(interaction : discord.Interaction, user : discord.User):
     tab = ticket_tab(interaction.guild_id)
-    msg = ""
+    if not tab.ft_get_by_user(user.id):
+        await interaction.response.send_message(f"No record from {user.mention} in table")
+        return
+    numid = 0
+    id = ""
+    threadid = ""
+    status = ""
     for obj in tab.ft_get_by_user(user.id):
-        msg += str(obj) + "\n"
-    await interaction.response.send_message(msg if msg else f"No record from {user.name} in table")
+        numid += 1
+        id += f"{numid:>02}\n"
+        threadid += str(obj["thread_id"]) + "\n"
+        status += "["+str(obj["status"]) + "]\n"
+    embed = discord.Embed(
+        title=f"User thread history",
+        description=f"threads from {user.mention}",
+        color=0x3868e0,
+    )
+    embed.add_field(name="ID",value=id)
+    embed.add_field(name="ThreadID",value=threadid)
+    embed.add_field(name="Active",value=status)
+    await interaction.response.send_message(embed=embed)
 
 @client.tree.command(name="log_thread", description="Log specific thread")
 async def cb(interaction : discord.Interaction, thread : discord.Thread):
@@ -122,7 +154,7 @@ async def cb(interaction : discord.Interaction, thread : discord.Thread):
     embed.add_field(name="Room ID",value=f"{res["thread_id"]}")
     embed.add_field(name="Owner",value=interaction.guild.get_member(res["owner_id"]).mention,inline=False)
     embed.add_field(name="Active Status",value=res["status"],inline=False)
-    embed.add_field(name="Participant",value=res["participant"],inline=False)
+    embed.add_field(name="Participant",value=", ".join([interaction.guild.get_member(user_id).mention for user_id in res["participant"]]),inline=False)
     await interaction.response.send_message(embed=embed)
 
 @client.tree.command(name="log_stat", description="Log by thread status")
