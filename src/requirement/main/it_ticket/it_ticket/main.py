@@ -59,15 +59,11 @@ async def clean_thread(interaction : discord.Interaction):
         )
     await interaction.response.send_message("Your home is clean")
 
-@client.tree.command(name="cat", description="cat everywhere")
-async def cat(interaction : discord.Interaction):
-    await interaction.response.send_message(f"{interaction.channel.threads}")
-
 class console_opt(enum.Enum):
     log = 1
     clear = 2
 
-@client.tree.command(name="console", description="list all log of thread")
+@client.tree.command(name="console", description="Work in progress for interact with DB")
 async def lst_thrd(interaction : discord.Interaction, option : console_opt):
     if not interaction.user.guild_permissions.administrator:
         await interaction.response.send_message("## Console avaliable for administrator only!")
