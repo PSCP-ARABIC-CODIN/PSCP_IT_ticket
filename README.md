@@ -2,6 +2,8 @@
 
 ## DEPENDENCIES
 For develop and running this project the packages below this should be installed
+* poetry
+* Docker
 
 ### First step ( •̀ ω •́ )y
 
@@ -10,7 +12,8 @@ To start developing the project. Installing "poetry" is recommmend for this proj
 ### Installing poetry ✍️(◔◡◔)
 To install poetry run the command below<br>
 
-**Window**
+**Window**<br>
+recommend to use git bash
 ```sh
 pip install poetry
 ```
@@ -36,14 +39,13 @@ Then to install all dependencies run
 poetry install
 ```
 
-### Now Good to go 👍
-Except.... for those who want to use docker.<br>
-To build docker compose run this at root directory of the project 
+### Containerize 📦
+Docker also require in order to run an entire service.
 ```sh
 make build
 ```
 
-for start all microservice
+start all microservice
 ```sh
 make up
 ```
