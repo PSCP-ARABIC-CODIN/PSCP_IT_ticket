@@ -87,17 +87,17 @@ class ticket_tab:
         """get specific record by id"""
         return self.collection.find_one({"thread_id" : tid})
 
-    def ft_get_by_user(self, user_id : int):
+    def ft_get_by_user(self, user_id : int) -> list:
         """get specific record by user"""
-        return self.collection.find({"owner_id" : user_id}).to_list()
+        return self.collection.find({"owner_id" : user_id}, {"_id" : False}).to_list()
 
-    def ft_get_by_stat(self, status : bool) -> pymongo.cursor.Cursor:
+    def ft_get_by_stat(self, status : bool) -> list:
         """get specific record by open/closed"""
-        return self.collection({"status" : status })
+        return self.collection.find({"status" : status }, {"_id" : False}).to_list()
 
-    def ft_get_all(self) -> pymongo.cursor.Cursor:
+    def ft_get_all(self) -> list:
         """get record of all thread in the server"""
-        return self.collection.find({},{"_id": False})
+        return self.collection.find({}, {"_id": False}).to_list()
 
     def ft_clear(self) -> None:
         """clear all record in table"""

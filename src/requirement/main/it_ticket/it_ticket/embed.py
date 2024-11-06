@@ -7,6 +7,8 @@ class archive_thread_btn(discord.ui.View):
         await interaction.response.send_message(f"## Thread has been closed by {interaction.user.mention}")
 
         # edit stat inside channel
+        tab = ticket_tab(interaction.guild_id)
+        tab.ft_close_thread(interaction.channel_id)
         await interaction.channel.edit(
             name=f"[CLOSED]{interaction.channel.name[interaction.channel.name.find("]") + 1:]}",
             locked = True,
@@ -62,7 +64,7 @@ def embed_cmd(client: discord.Client) -> None:
             )
             if link:
                 embed.set_image(url=f"{link}")
-            embed.set_footer(text="With hate by ...")
+            embed.set_footer(text="Forum with log")
             # Send the embed message using interaction.response
             await interaction.response.send_message(interaction.channel.type, embed=embed, view=create_thread_btn())
         else:
