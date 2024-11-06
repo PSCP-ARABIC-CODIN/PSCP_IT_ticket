@@ -15,10 +15,12 @@ client: pymongo.MongoClient = pymongo.MongoClient(
 ticket_db = client["ticket_db"]
 
 class ticket_tab:
-    """Constructor of each server table.
+    """Constructor of each server collection/table.
 
-        Attributes
-        ----------
+        Field
+        -----
+        every field in the collection/table.
+
         thread_id : `int`
             Id of thread.
         owner : `str`
@@ -30,7 +32,7 @@ class ticket_tab:
         status : `bool`
             `True` if this thread still active.
         participant : `list`
-            List of username who've interact in this thread.
+            List of user_id who've interact in this thread.
     """
     def __init__(self, server_id : int) -> None:
         server_id = str(server_id)
@@ -85,19 +87,19 @@ class ticket_tab:
 
     def ft_get_by_thread(self, tid : int) -> dict:
         """get specific record by id"""
-        return self.collection.find_one({"thread_id" : tid})
+        return self.collection.find_one({"thread_id" : tid}, {"_id" : False})
 
     def ft_get_by_user(self, user_id : int) -> list:
         """get specific record by user"""
-        return self.collection.find({"owner_id" : user_id}, {"_id" : False}).to_list()
+        return self.collection.find({"owner_id" : user_id}, {"_id" : False}).sort("_id", pymongo.DESCENDING).limit(50).to_list()
 
     def ft_get_by_stat(self, status : bool) -> list:
         """get specific record by open/closed"""
-        return self.collection.find({"status" : status }, {"_id" : False}).to_list()
+        return self.collection.find({"status" : status }, {"_id" : False}).sort("_id", pymongo.DESCENDING).limit(50).to_list()
 
     def ft_get_all(self) -> list:
         """get record of all thread in the server"""
-        return self.collection.find({}, {"_id": False}).to_list()
+        return self.collection.find({}, {"_id": False}).sort("_id", pymongo.DESCENDING).limit(50).to_list()
 
     def ft_clear(self) -> None:
         """clear all record in table"""
