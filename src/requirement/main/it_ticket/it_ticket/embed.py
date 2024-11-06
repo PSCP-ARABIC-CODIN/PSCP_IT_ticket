@@ -2,7 +2,7 @@ from tdb import ticket_tab
 import discord
 
 class archive_thread_btn(discord.ui.View):
-    @discord.ui.button(style=discord.ButtonStyle.blurple, emoji="💾", label="Archive")
+    @discord.ui.button(style=discord.ButtonStyle.blurple, emoji="💾", label="Close")
     async def ar_callback(self, interaction : discord.Interaction, button : discord.ui.Button):
         await interaction.response.send_message(f"## Thread has been closed by {interaction.user.mention}")
 
@@ -35,7 +35,7 @@ class create_thread_btn(discord.ui.View):  # Create a class called MyView that s
 
         # Send Embed for Archiving
         await thread.send(
-            content=self.responder.mention if self.responder else "",
+            content=f"{self.responder.mention if self.responder else ""} มีคนกำลังต้องการความช่วยเหลือ",
             embed = discord.Embed(
                 title = "**Archive the thread**",
                 description = "When finished your question use button below\n to archive thread",
@@ -54,16 +54,12 @@ def embed_cmd(client: discord.Client) -> None:
         if interaction.channel.type != discord.ChannelType.text:
             await interaction.response.send_message("## Can't use inside thread")
             return
-
-        try:
-            int(hex_color,16)
-        except:
-            hex_color = 0x3868e0
-
+        if not hex_color:
+            hex_color = "3868e0"
         embed = discord.Embed(
             title=header,
             description=descriptions,
-            color=hex_color,
+            color=discord.Color(int(hex_color, 16)),
         )
         if link:
             embed.set_image(url=f"{link}")
