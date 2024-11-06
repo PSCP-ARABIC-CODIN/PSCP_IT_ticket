@@ -46,27 +46,19 @@ def embed_cmd(client: discord.Client) -> None:
 
     # Create a slash command
     @client.tree.command(name="ticket", description="Send ticket message")
-    async def text_box(interaction: discord.Interaction, text: str = "", link: str = ""):
-        if interaction.user.guild_permissions.administrator:
-            if interaction.channel.type != discord.ChannelType.text:
-                await interaction.response.send_message("## Can't use inside thread")
-                return
+    async def text_box(interaction: discord.Interaction, header: str = "",descriptions: str = "", link: str = "", mentionrole: discord.Role = None):
+        if interaction.channel.type != discord.ChannelType.text:
+            await interaction.response.send_message("## Can't use inside thread")
+            return
 
-            aduse = interaction.user.mention
-            embed = discord.Embed(
-                description=(
-                    f"**{aduse}**\n"
-                    f"**Hello with message \"{text}\"**\n"
-                    "ต้องการสอบถามพี่ๆ แบบส่วนตัว\n"
-                    "สามารถกดปุ่มด้านล่างได้เลย !!!"
-                ),
-                color=0xF75306,  # Orange color
-            )
-            if link:
-                embed.set_image(url=f"{link}")
-            embed.set_footer(text="Forum with log")
-            # Send the embed message using interaction.response
-            await interaction.response.send_message(interaction.channel.type, embed=embed, view=create_thread_btn())
-        else:
-            await interaction.response.send_message("You need Administrator permissions to use this command.", ephemeral=True)
-        return
+        aduse = interaction.user.mention
+        embed = discord.Embed(
+            title=header,
+            description=descriptions,
+            color=0x3868e0,
+        )
+        if link:
+            embed.set_image(url=f"{link}")
+        embed.set_footer(text=f"By alabic coding")
+        # Send the embed message using interaction.response
+        await interaction.response.send_message(embed=embed, view=create_thread_btn())
