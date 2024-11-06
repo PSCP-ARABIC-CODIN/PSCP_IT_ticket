@@ -50,17 +50,23 @@ def embed_cmd(client: discord.Client) -> None:
 
     # Create a slash command
     @client.tree.command(name="ticket", description="Send ticket message")
-    async def text_box(interaction: discord.Interaction, header: str = "",descriptions: str = "", link: str = "", mentionrole: discord.Role = None):
+    async def text_box(interaction: discord.Interaction, header: str = "",descriptions: str = "", link: str = "", mentionrole: discord.Role = None, hex_color: str = ""):
         if interaction.channel.type != discord.ChannelType.text:
             await interaction.response.send_message("## Can't use inside thread")
             return
+
+        try:
+            int(hex_color,16)
+        except:
+            hex_color = 0x3868e0
+
         embed = discord.Embed(
             title=header,
             description=descriptions,
-            color=0x3868e0,
+            color=hex_color,
         )
         if link:
             embed.set_image(url=f"{link}")
-        embed.set_footer(interaction.user.mention)
+        embed.set_footer(text="made by arabic code team")
         # Send the embed message using interaction.response
         await interaction.response.send_message(embed=embed, view=create_thread_btn(responder=mentionrole))
