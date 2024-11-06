@@ -15,7 +15,23 @@ client: pymongo.MongoClient = pymongo.MongoClient(
 ticket_db = client["ticket_db"]
 
 class ticket_tab:
-    """Constructor of each server table"""
+    """Constructor of each server table.
+
+        Attributes
+        ----------
+        thread_id : `int`
+            Id of thread.
+        owner : `str`
+            Username of thread owner.
+        owner_id : `int`
+            User id of thread owner.
+        private : `bool`
+            Thread visibility `True` if it's private.
+        status : `bool`
+            `True` if this thread still active.
+        participant : `list`
+            List of username who've interact in this thread.
+    """
     def __init__(self, server_id : int) -> None:
         server_id = str(server_id)
         if not server_id in ticket_db.list_collection_names():
