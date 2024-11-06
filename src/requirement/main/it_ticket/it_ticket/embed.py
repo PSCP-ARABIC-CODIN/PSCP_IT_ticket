@@ -16,9 +16,10 @@ class archive_thread_btn(discord.ui.View):
         )
 
 class create_thread_btn(discord.ui.View):  # Create a class called MyView that subclasses discord.ui.View
-    def __init__(self, *, timeout: float | None = 180, responder : discord.Role | None = None):
+    def __init__(self, *, timeout: float | None = 360, responder : discord.Role | None = None, response_message : str = ""):
         super().__init__(timeout=timeout)
         self.responder = responder
+        self.response_message = response_message
 
     @discord.ui.button(style=discord.ButtonStyle.primary, emoji="🎟️", label="Create Ticket Here")  # Create a button
     async def button_callback(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -35,7 +36,7 @@ class create_thread_btn(discord.ui.View):  # Create a class called MyView that s
 
         # Send Embed for Archiving
         await thread.send(
-            content=f"{self.responder.mention if self.responder else ""} มีคนกำลังต้องการความช่วยเหลือ",
+            content=f"{self.responder.mention if self.responder else ""}{self.response_message}",
             embed = discord.Embed(
                 title = "**Archive the thread**",
                 description = "When finished your question use button below\n to archive thread",
@@ -50,7 +51,8 @@ def embed_cmd(client: discord.Client) -> None:
 
     # Create a slash command
     @client.tree.command(name="ticket", description="Send ticket message")
-    async def text_box(interaction: discord.Interaction, header: str = "",descriptions: str = "", link: str = "", mentionrole: discord.Role = None, hex_color: str = ""):
+    async def text_box(interaction: discord.Interaction, header: str = "",descriptions: str = "", link: str = "",\
+                       mentionrole: discord.Role = None, mention_message : str = "", hex_color: str = ""):
         if interaction.channel.type != discord.ChannelType.text:
             await interaction.response.send_message("## Can't use inside thread")
             return
@@ -65,4 +67,4 @@ def embed_cmd(client: discord.Client) -> None:
             embed.set_image(url=f"{link}")
         embed.set_footer(text="made by arabic code team")
         # Send the embed message using interaction.response
-        await interaction.response.send_message(embed=embed, view=create_thread_btn(responder=mentionrole))
+        await interaction.response.send_message(embed=embed, view=create_thread_btn(responder=mentionrole, response_message=mention_message))
