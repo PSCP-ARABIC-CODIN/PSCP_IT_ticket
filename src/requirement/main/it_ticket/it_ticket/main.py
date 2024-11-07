@@ -87,7 +87,7 @@ async def lst_thrd(interaction : discord.Interaction, option : console_opt):
 @client.tree.command(name="log_all", description="log every records in the server")
 async def cb(interaction : discord.Interaction):
     tab = ticket_tab(interaction.guild_id)
-    if tab.ft_get_all():
+    if not tab.ft_get_all():
         await interaction.response.send_message("No record exist.")
     else:
         numid = 0
